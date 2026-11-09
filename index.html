@@ -28,10 +28,17 @@ a.btn:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
 </main>
 <script>
 if("serviceWorker" in navigator){navigator.serviceWorker.register("sw.js").catch(function(){})}
-// Einmal pro Sitzung automatisch weiterleiten. Kommst du mit «Zurück» hierher, bleibt der Knopf.
-var go=document.getElementById("go").href,auto=true;
-try{if(sessionStorage.getItem("nwayb-went")){auto=false}else{sessionStorage.setItem("nwayb-went","1")}}catch(e){}
-if(auto){setTimeout(function(){location.replace(go)},500)}else{document.getElementById("msg").textContent="Tippe, um die App zu öffnen."}
+// Im Browser bleibt die Seite stehen, damit Chrome «Installieren» für NWAYB anbietet.
+// Nur in der installierten App (Standalone) geht es direkt weiter zu deiner App.
+var go=document.getElementById("go").href,msg=document.getElementById("msg");
+var standalone=(window.matchMedia&&matchMedia("(display-mode: standalone)").matches)||navigator.standalone===true;
+if(standalone){
+  var again=false;
+  try{if(sessionStorage.getItem("nwayb-went")){again=true}else{sessionStorage.setItem("nwayb-went","1")}}catch(e){}
+  if(again){msg.textContent="Tippe, um die App zu öffnen."}else{setTimeout(function(){location.replace(go)},400)}
+}else{
+  msg.textContent="Chrome-Menü (drei Punkte) → «Installieren» oder «Zum Startbildschirm hinzufügen».";
+}
 </script>
 </body>
 </html>
