@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>NWAYB</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#141A1B">
+<style>
+:root{--bg:#141A1B;--ink:#EEF1F0;--run:#EE6A4C;--muted:#93A1A2}
+html,body{height:100%;margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{min-height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:24px;box-sizing:border-box;text-align:center}
+img{width:96px;height:96px;border-radius:24px}
+h1{margin:0;font-size:28px;letter-spacing:.14em}
+p{margin:0;color:var(--muted)}
+a.btn{display:inline-block;padding:14px 28px;border-radius:12px;background:var(--run);color:#141A1B;font-weight:700;text-decoration:none}
+a.btn:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+</style>
+</head>
+<body>
+<main>
+  <img src="icon-192.png" alt="NWAYB">
+  <h1>NWAYB</h1>
+  <p id="msg">Öffne deine App …</p>
+  <a class="btn" id="go" href="https://claude.ai/artifact/GRAEqEDmGbw4rRsfYhfzj6">NWAYB öffnen</a>
+</main>
+<script>
+if("serviceWorker" in navigator){navigator.serviceWorker.register("sw.js").catch(function(){})}
+// Einmal pro Sitzung automatisch weiterleiten. Kommst du mit «Zurück» hierher, bleibt der Knopf.
+var go=document.getElementById("go").href,auto=true;
+try{if(sessionStorage.getItem("nwayb-went")){auto=false}else{sessionStorage.setItem("nwayb-went","1")}}catch(e){}
+if(auto){setTimeout(function(){location.replace(go)},500)}else{document.getElementById("msg").textContent="Tippe, um die App zu öffnen."}
+</script>
+</body>
+</html>
